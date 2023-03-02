@@ -1,13 +1,12 @@
 //selecting all required elements
 const dropArea = document.querySelector(".drag-area"),
-    dragText = dropArea.querySelector("header"),
     button = dropArea.querySelector("button"),
-    input = dropArea.querySelector("input");
+    input = dropArea.querySelector("input"),
+    progress = document.querySelector("progressBar");
 
 let file; //this is a global variable and we'll use it inside multiple functions
 dropArea.onclick = () => {
     input.click(); //if user click on the button then the input also clicked
-    dragText.textContent = "Drop data files here to upload, or click to select files";
 }
 input.addEventListener("change", function () {
     //getting user select file and [0] this means if user select multiple files then we'll select only the first one
@@ -19,12 +18,10 @@ input.addEventListener("change", function () {
 dropArea.addEventListener("dragover", (event) => {
     event.preventDefault(); //preventing from default behaviour
     dropArea.classList.add("active");
-    dragText.textContent = "Release to Upload File";
 });
 //If user leave dragged File from DropArea
 dropArea.addEventListener("dragleave", () => {
     dropArea.classList.remove("active");
-    dragText.textContent = "Drop data files here to upload, or click to select files";
 });
 //If user drop File on DropArea
 dropArea.addEventListener("drop", (event) => {
@@ -42,12 +39,25 @@ function showFile() {
             let fileURL = fileReader.result; //passing user file source in fileURL variable
             // UNCOMMENT THIS BELOW LINE. I GOT AN ERROR WHILE UPLOADING THIS POST SO I COMMENTED IT
             // let imgTag = `<img src="${fileURL}" alt="image">`; //creating an img tag and passing user selected file source inside src attribute
-            dropArea.innerHTML = imgTag; //adding that created img tag inside dropArea container
+            // dropArea.innerHTML = imgTag; //adding that created img tag inside dropArea container
         }
         fileReader.readAsDataURL(file);
+        showProgress();
     } else {
         alert("This is not an Image File!");
         dropArea.classList.remove("active");
-        dragText.textContent = "Drop data files here to upload, or click to select files";
     }
+}
+
+function showProgress() {
+    let bar = document.getElementById("progressBar");
+    bar.style.display = "block";
+    let interval = setInterval(function () {
+        if (bar.value == 100) {
+            bar.style.display = "none";
+            clearInterval(interval);
+        }
+        bar.value += 10
+    }, 500);
+
 }
