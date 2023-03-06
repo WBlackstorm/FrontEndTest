@@ -56,5 +56,10 @@ function showProgress() {
         }
         bar.value += 10
     }, 500);
-
 }
+
+$('.basicAutoComplete').autoComplete({
+    resolverSettings: {
+        url: 'content.json'
+    }
+});
